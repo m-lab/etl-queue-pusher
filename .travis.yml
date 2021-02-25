@@ -50,11 +50,8 @@ install:
 script:
 - go get -v ./...
 - go test -v -coverprofile=profile.cov ./...
-- EC=$[ $EC || $? ] ;
 # Go back to the root build dir
 - cd $TRAVIS_BUILD_DIR
-- echo "summary status $EC" ;
-- if [[ $EC != 0 ]]; then false; fi ;
 
 # Coveralls
 # Run "unit tests" with coverage.
