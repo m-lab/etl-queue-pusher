@@ -18,13 +18,13 @@ steps:
 - name: bash:5.1.4
   id: Replace template variables in app.yaml.template
   env:
-    - RELEASE_TAG=${TAG_NAME}
-    - COMMIT_HASH=${COMMIT_SHA}
+    - TAG_NAME=${TAG_NAME}
+    - COMMIT_SHA=${COMMIT_SHA}
   args:
     - -c
     - |
-      sed -e 's/{{RELEASE_TAG}}/${RELEASE_TAG}/g' \
-        -e 's/{{COMMIT_HASH}}/${COMMIT_HASH}/g' \
+      sed -e 's/{{RELEASE_TAG}}/${TAG_NAME}/g' \
+        -e 's/{{COMMIT_HASH}}/${COMMIT_SHA}/g' \
         app.yaml.template > app.yaml
 
 - name: gcr.io/$PROJECT_ID/gcloud-jsonnet-cbif
