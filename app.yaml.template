@@ -7,5 +7,5 @@ handlers:
 
 env_variables:
   # These should be substituted in the travis deployment script.
-  RELEASE_TAG: ${TRAVIS_TAG}
-  COMMIT_HASH: ${TRAVIS_COMMIT}
+  RELEASE_TAG: {{RELEASE_TAG}}
+  COMMIT_HASH: {{COMMIT_HASH}}
