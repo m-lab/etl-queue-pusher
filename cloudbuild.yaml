@@ -14,9 +14,18 @@ steps:
 
 - name: etl-queue-pusher
   id: Run package tests
-  entrypoint: "/usr/lib/go-1.11/bin/go"
+  entrypoint: "go"
   args: [
-    'test', './...'
+    'test', '-cover', '-coverprofile=cov', './...'
+  ]
+
+- name: etl-queue-pusher
+  id: Upload test coverage to coveralls
+  env:
+    - COVERALLS_TOKEN=${_COVERALLS_TOKEN}
+  entrypoint: "go"
+  args: [
+    '-coverprofile=cov', '-repotoken=$COVERALLS_TOKEN'
   ]
 
 - name: bash:5.1.4
