@@ -1,0 +1,36 @@
+options:
+  env:
+  - PROJECT_ID=$PROJECT_ID
+
+steps:
+- name: gcr.io/cloud-builders/docker
+  id: Build Docker container to run tests.
+  args: [
+    'build', '-t', 'etl-queue-pusher', '.'
+  ]
+
+- name: etl-queue-pusher
+  id: Run package tests
+  args: [
+    '/usr/lib/go-1.11', 'test', './...'
+  ]
+
+- name: bash:5.1.4
+  id: Replace template variables in app.yaml.template
+  env:
+    - RELEASE_TAG=${TAG_NAME}
+    - COMMIT_HASH=${COMMIT_SHA}
+  args:
+    - -c
+    - |
+      sed -e 's/{{RELEASE_TAG}}/${RELEASE_TAG}/g' \
+        -e 's/{{COMMIT_HASH}}/${COMMIT_HASH}/g' \
+        app.yaml.template > app.yaml
+
+- name: gcr.io/$PROJECT_ID/gcloud-jsonnet-cbif
+  id: "Deploy etl-queue-pusher to GAE"
+  env:
+    # Use cbif condition: only run these steps in one of these projects.
+    - PROJECT_IN=mlab-sandbox,mlab-staging,mlab-oti
+  args:
+  - gcloud --project $PROJECT_ID app deploy --promote app.yaml
