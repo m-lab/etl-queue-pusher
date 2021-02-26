@@ -26,6 +26,7 @@ steps:
 
 - name: etl-queue-pusher
   id: Replace template variables in app.yaml.template
+  entrypoint: bash
   env:
     - TAG_NAME=${TAG_NAME}
     - COMMIT_SHA=${COMMIT_SHA}
