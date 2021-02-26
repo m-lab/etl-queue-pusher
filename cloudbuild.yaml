@@ -14,16 +14,14 @@ steps:
 
 - name: etl-queue-pusher
   id: Run package tests
-  entrypoint: "go"
   args: [
-    'test', '-cover', '-coverprofile=cov', './...'
+    'go', 'test', '-cover', '-coverprofile=cov', './...'
   ]
 
 - name: etl-queue-pusher
   id: Upload test coverage to coveralls
-  entrypoint: "goveralls"
   args: [
-    '-coverprofile=cov', '-repotoken=$_COVERALLS_TOKEN'
+    'goveralls', '-coverprofile=cov', '-repotoken=$_COVERALLS_TOKEN'
   ]
 
 - name: etl-queue-pusher
@@ -32,14 +30,13 @@ steps:
     - TAG_NAME=${TAG_NAME}
     - COMMIT_SHA=${COMMIT_SHA}
   args:
-    - -c
     - |
       sed -e 's/{{RELEASE_TAG}}/${TAG_NAME}/g' \
         -e 's/{{COMMIT_HASH}}/${COMMIT_SHA}/g' \
         app.yaml.template > app.yaml
 
 - name: gcr.io/$PROJECT_ID/gcloud-jsonnet-cbif
-  id: "Deploy etl-queue-pusher to GAE"
+  id: Deploy etl-queue-pusher to GAE
   env:
     # Use cbif condition: only run these steps in one of these projects.
     - PROJECT_IN=mlab-sandbox,mlab-staging,mlab-oti
