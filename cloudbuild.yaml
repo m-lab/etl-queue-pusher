@@ -21,11 +21,9 @@ steps:
 
 - name: etl-queue-pusher
   id: Upload test coverage to coveralls
-  env:
-    - COVERALLS_TOKEN=${_COVERALLS_TOKEN}
   entrypoint: "go"
   args: [
-    '-coverprofile=cov', '-repotoken=$COVERALLS_TOKEN'
+    '-coverprofile=cov', '-repotoken=$_COVERALLS_TOKEN'
   ]
 
 - name: bash:5.1.4
