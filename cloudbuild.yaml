@@ -26,7 +26,7 @@ steps:
     '-coverprofile=cov', '-repotoken=$_COVERALLS_TOKEN'
   ]
 
-- name: bash:5.1.4
+- name: etl-queue-pusher
   id: Replace template variables in app.yaml.template
   env:
     - TAG_NAME=${TAG_NAME}
