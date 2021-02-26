@@ -11,8 +11,9 @@ steps:
 
 - name: etl-queue-pusher
   id: Run package tests
+  entrypoint: "/usr/lib/go-1.11"
   args: [
-    '/usr/lib/go-1.11', 'test', './...'
+    'test', './...'
   ]
 
 - name: bash:5.1.4
